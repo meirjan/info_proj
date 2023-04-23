@@ -16,11 +16,11 @@ namespace hospital
     {
 
         OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
-
+        //подключяем БД
         public Form2()
         {
             InitializeComponent();
-            connect.Open();
+            connect.Open();//открываем соединение
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -38,7 +38,7 @@ namespace hospital
                 textBox4.Visible = false;
                 label4.Enabled = false;
                 label4.Visible = false;
-            }
+            }//Скрываем и показываем данные на докторство
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -52,30 +52,30 @@ namespace hospital
             {
                 label5.Visible = false;
                 label5.Enabled = false;
-            }
+            }//проверяем на кирилицу
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             if(textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
-            {
+            {//проверяем на наполненность
             if(checkBox1.Checked == true)
-            {
-                if(textBox4.Text == "87754835322")
-                {
+            {//если юзер доктор
+                if(textBox4.Text == "***")
+                {//если у него правильный код доктора
                     string query = "INSERT INTO users(IIN, name, password, doc) VALUES('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox3.Text + "', '" + textBox4.Text + "');";
                     OleDbCommand command = new OleDbCommand(query, connect);
                     OleDbDataReader reader = command.ExecuteReader();
                     MessageBox.Show("Вы зарегестрированы");
-                    this.Close();
+                    this.Close();//Регистрируем доктора в систему
                 }
                 else
-                {
+                {//если ктото фальшивит
                     MessageBox.Show("неправильный номер доктора");
                 }
             }
             else
-            {
+            {//если юзер не доктор
                 string query = "INSERT INTO users(IIN, name, password) VALUES('" + textBox1.Text + "', '" + textBox2.Text + "', '" + textBox3.Text + "');";
                 OleDbCommand command = new OleDbCommand(query, connect);
                 OleDbDataReader reader = command.ExecuteReader();
@@ -87,13 +87,13 @@ namespace hospital
             }
             }
             else
-            {
+            {//объеснения не нужны...
                 MessageBox.Show("Заполните все строки");
             }
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
+        {//показываем и скрываем пароль
             if (checkBox2.Checked == true)
             {
                 textBox3.UseSystemPasswordChar = false;
