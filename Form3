@@ -1,0 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.OleDb;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace hospital
+{
+    public partial class Form3 : Form
+    {
+
+        OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
+
+
+        public Form3()
+        {
+            InitializeComponent();
+            connect.Open();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string sex = "?";
+            if(radioButton1.Checked == true)
+            {
+                sex = "Male";
+            }
+            else if(radioButton2.Checked == true) 
+            {
+                sex = "Female";
+            }
+            string bd = textBox4.Text + "-" + textBox5.Text + "-" + textBox6.Text;
+            string query = "UPDATE users SET name = '" + textBox2.Text + "', bd = '" + bd + "', diag = '" + textBox3.Text + "', sex = '" + sex + "' WHERE IIN = '" + textBox1.Text + "';";
+            OleDbCommand command = new OleDbCommand(query, connect);
+            OleDbDataReader reader = command.ExecuteReader();
+            MessageBox.Show("Вы успешно сохранили данные");
+        }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+            // TODO: This line of code loads data into the 'hospitalDataSet1.users' table. You can move, or remove it, as needed.
+            this.usersTableAdapter1.Fill(this.hospitalDataSet1.users);
+
+        }
+
+        private void Form3_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void tabPage2_Enter(object sender, EventArgs e)
+        {
+            this.usersTableAdapter1.Fill(this.hospitalDataSet1.users);
+
+        }
+    }
+}
