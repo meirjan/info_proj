@@ -15,21 +15,21 @@ namespace hospital
     {
 
         OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
-
+        //опять соединяем
 
         public Form3()
         {
             InitializeComponent();
-            connect.Open();
+            connect.Open();//опять открываем
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-
+            //ну и зачем он тут стоит
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
+        {//смотрим как записать пол
             string sex = "?";
             if(radioButton1.Checked == true)
             {
@@ -43,11 +43,11 @@ namespace hospital
             string query = "UPDATE users SET name = '" + textBox2.Text + "', bd = '" + bd + "', diag = '" + textBox3.Text + "', sex = '" + sex + "' WHERE IIN = '" + textBox1.Text + "';";
             OleDbCommand command = new OleDbCommand(query, connect);
             OleDbDataReader reader = command.ExecuteReader();
-            MessageBox.Show("Вы успешно сохранили данные");
+            MessageBox.Show("Вы успешно сохранили данные");//обновляем и сохраняем данные человека
         }
 
         private void Form3_Load(object sender, EventArgs e)
-        {
+        {//что то с таблицой (обнова)
             // TODO: This line of code loads data into the 'hospitalDataSet1.users' table. You can move, or remove it, as needed.
             this.usersTableAdapter1.Fill(this.hospitalDataSet1.users);
 
@@ -55,11 +55,11 @@ namespace hospital
 
         private void Form3_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            Application.Exit();//если закрыли значит накрыли
         }
 
         private void tabPage2_Enter(object sender, EventArgs e)
-        {
+        {//что то с таблицой (обнавление)
             this.usersTableAdapter1.Fill(this.hospitalDataSet1.users);
 
         }
