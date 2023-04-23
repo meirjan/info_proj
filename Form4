@@ -14,16 +14,16 @@ namespace hospital
     public partial class Form4 : Form
     {
         OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
-        
+        //думаю уже объеснять не надо
         public Form4()
         {
             InitializeComponent();
-            connect.Open();
+            connect.Open();//тут тоже
         }
 
         private void Form4_Load(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM users WHERE IIN = '" + this.Text + "'"; ;
+            string query = "SELECT * FROM users WHERE IIN = '" + this.Text + "'"; ;//берем данные юзера
             OleDbCommand command = new OleDbCommand(query, connect);
             OleDbDataReader reader = command.ExecuteReader();
             while(reader.Read())
@@ -33,11 +33,11 @@ namespace hospital
                 label12.Text = reader[4].ToString();
                 label7.Text = reader[5].ToString();
                 label11.Text = reader[6].ToString();
-            }
+            }//выводим его данные
         }
 
         private void Form4_FormClosing(object sender, FormClosingEventArgs e)
-        {
+        {//останавливаем всю программу если закрыли
             Application.Exit();
         }
     }
