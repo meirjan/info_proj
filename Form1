@@ -1,0 +1,104 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Data.OleDb;
+
+namespace hospital
+{
+    public partial class Form1 : Form
+    {
+
+        OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
+        
+
+        public Form1()
+        {
+            InitializeComponent();
+            label5.Visible = false;
+            connect.Open();
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            if (Regex.IsMatch(textBox3.Text, @"\p{IsCyrillic}"))
+            {
+                label5.Visible = true;
+                label5.Enabled= true;
+            }
+            else
+            {
+                label5.Visible = false;
+                label5.Enabled = false;
+            }
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox2.Checked == true)
+            {
+                textBox3.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                textBox3.UseSystemPasswordChar = true;
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            var form2 = new Form2();
+            form2.Show();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bool f = false;
+            string query = "SELECT * FROM users";
+            OleDbCommand command = new OleDbCommand(query, connect);
+            OleDbDataReader reader = command.ExecuteReader();
+            while(reader.Read())
+            {
+                if (reader[0].ToString() == textBox1.Text && reader[1].ToString() == textBox2.Text && reader[2].ToString() == textBox3.Text)
+                {
+                    f = true;
+                    string query1 = "SELECT * FROM users WHERE IIN = '" + textBox1.Text + "';";
+                    OleDbCommand command1 = new OleDbCommand(query1, connect);
+                    OleDbDataReader reader1 = command1.ExecuteReader();
+                    while (reader1.Read())
+                    {
+                        if (reader1[3].ToString() == "87754835322")
+                        {
+                            var form3 = new Form3();
+                            form3.Show();
+                            this.Hide();
+                        }
+                        else
+                        {
+                            var form4 = new Form4();
+                            form4.Text = textBox1.Text;
+                            form4.Show();
+                            this.Hide();
+                        }
+                    }
+                    break;
+                }
+            }
+            if(f == false)
+            {
+                MessageBox.Show("Нету такого человека");
+            }
+        }
+    }
+}
