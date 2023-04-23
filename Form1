@@ -16,18 +16,18 @@ namespace hospital
     {
 
         OleDbConnection connect = new OleDbConnection("Provider = SQLOLEDB;Data Source=DESKTOP-F5VR2CL;Initial Catalog=Hospital;Integrated Security=SSPI");
-        
+        //подключаем базу данных
 
         public Form1()
         {
             InitializeComponent();
-            label5.Visible = false;
-            connect.Open();
+            label5.Visible = false;//скрываем ненужные вещи
+            connect.Open();//открываем соединение с БД
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-            if (Regex.IsMatch(textBox3.Text, @"\p{IsCyrillic}"))
+            if (Regex.IsMatch(textBox3.Text, @"\p{IsCyrillic}"))//проверяем на кирилицу
             {
                 label5.Visible = true;
                 label5.Enabled= true;
@@ -41,7 +41,7 @@ namespace hospital
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
-            if(checkBox2.Checked == true)
+            if(checkBox2.Checked == true)//показываем и скрываем пароль
             {
                 textBox3.UseSystemPasswordChar = false;
             }
@@ -53,13 +53,13 @@ namespace hospital
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            var form2 = new Form2();
+            var form2 = new Form2();//открываем форму регистрации
             form2.Show();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            Application.Exit();//остснавливаем все если закрыли это окно
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -71,7 +71,7 @@ namespace hospital
             while(reader.Read())
             {
                 if (reader[0].ToString() == textBox1.Text && reader[1].ToString() == textBox2.Text && reader[2].ToString() == textBox3.Text)
-                {
+                {//находим пользователя
                     f = true;
                     string query1 = "SELECT * FROM users WHERE IIN = '" + textBox1.Text + "';";
                     OleDbCommand command1 = new OleDbCommand(query1, connect);
@@ -79,15 +79,15 @@ namespace hospital
                     while (reader1.Read())
                     {
                         if (reader1[3].ToString() == "87754835322")
-                        {
-                            var form3 = new Form3();
+                        {//проверяем на докторство
+                            var form3 = new Form3();//открываем форму докторов
                             form3.Show();
                             this.Hide();
                         }
                         else
                         {
-                            var form4 = new Form4();
-                            form4.Text = textBox1.Text;
+                            var form4 = new Form4();//открываем форму пациентов
+                            form4.Text = textBox1.Text;//передаем данные пациента
                             form4.Show();
                             this.Hide();
                         }
@@ -96,7 +96,7 @@ namespace hospital
                 }
             }
             if(f == false)
-            {
+            {//что будет если нет такого человека
                 MessageBox.Show("Нету такого человека");
             }
         }
